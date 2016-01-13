@@ -10,17 +10,18 @@ The actual module is generated form the official XHTML 1.1 Schema. There is no
 offical XML Schema for HTML5 (because it isn't XML), if you happen to come
 across one that works please let me know.
 
-It uses Typesafe::HTML to guard against lack of quoting of HTML-tags. As a
-dropin-replacement of `HTML::Writer`, it's about 5% slower then the former. For
-now neither `HTML` nor `HTML::utf8-to-htmlentity()` can be overloaded. You can
-replace the entire module to get the same result.
+It uses [Typesafe::HTML](https://github.com/gfldex/perl6-typesafe-xhtml-writer)
+to guard against lack of quoting of HTML-tags. As a dropin-replacement of
+`HTML::Writer`, it's about 5% slower then the former. For now neither `HTML`
+nor `HTML::utf8-to-htmlentity()` can be overloaded. You can replace the entire
+module to get the same result.
 
-`Typesafe::HTML::Skeleton` provides the routine `xhtml-skeleton` that takes
-instances of `HTML` (the type) as parameters and returns `HTML`. The named
-arguments takes a single or a list of tags of type `HTML` to be added to the
-header of the resulting XHTML document. `HTML` is a flat eager string that is
-about 5% slower then without typesafety. If you need a DOM use a module that
-does not focus on speed.
+[`Typesafe::HTML::Skeleton`](https://raw.githubusercontent.com/gfldex/perl6-typesafe-xhtml-writer/master/lib/Typesafe/XHTML/Skeleton.pm6)
+provides the routine `xhtml-skeleton` that takes instances of `HTML` (the type)
+as parameters and returns `HTML`. The named arguments takes a single or a list
+of tags of type `HTML` to be added to the header of the resulting XHTML
+document. `HTML` is a flat eager string that is about 5% slower then without
+typesafety. If you need a DOM use a module that does not focus on speed.
 
 
 ## Usage:
