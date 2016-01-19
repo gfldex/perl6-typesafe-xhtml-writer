@@ -4,6 +4,7 @@ my $indent = 0;
 
 constant NL = "\n";
 my $Guard = HTML;
+my Bool $shall-indent = True;
 sub html ( :$lang?, :$xml-lang?, :$dir?, :$id?, *@c --> HTML) is export(:ALL :html) {
     (temp $indent)+=2;
     for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
@@ -14,7 +15,7 @@ sub html ( :$lang?, :$xml-lang?, :$dir?, :$id?, *@c --> HTML) is export(:ALL :ht
     ($dir ?? ' dir' ~ '=' ~ "\"$dir\"" !! Empty) ~
     ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</html>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</html>') 
               !! '/>' )
     )
 }
@@ -31,7 +32,7 @@ sub head ( :$lang?, :$xml-lang?, :$dir?, :$id?, :$profile?, *@c --> HTML) is exp
     ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($profile ?? ' profile' ~ '=' ~ "\"$profile\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</head>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</head>') 
               !! '/>' )
     )
 }
@@ -47,7 +48,7 @@ sub title ( :$lang?, :$xml-lang?, :$dir?, :$id?, *@c --> HTML) is export(:ALL :t
     ($dir ?? ' dir' ~ '=' ~ "\"$dir\"" !! Empty) ~
     ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</title>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</title>') 
               !! '/>' )
     )
 }
@@ -61,7 +62,7 @@ sub base ( :$href?, :$id?, *@c --> HTML) is export(:ALL :base) {
            ($href ?? ' href' ~ '=' ~ "\"$href\"" !! Empty) ~
     ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</base>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</base>') 
               !! '/>' )
     )
 }
@@ -81,7 +82,7 @@ sub meta ( :$lang?, :$xml-lang?, :$dir?, :$id?, :$http-equiv?, :$name?, :$conten
     ($content ?? ' content' ~ '=' ~ "\"$content\"" !! Empty) ~
     ($scheme ?? ' scheme' ~ '=' ~ "\"$scheme\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</meta>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</meta>') 
               !! '/>' )
     )
 }
@@ -117,7 +118,7 @@ sub link ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$
     ($rev ?? ' rev' ~ '=' ~ "\"$rev\"" !! Empty) ~
     ($media ?? ' media' ~ '=' ~ "\"$media\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</link>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</link>') 
               !! '/>' )
     )
 }
@@ -137,7 +138,7 @@ sub style ( :$lang?, :$xml-lang?, :$dir?, :$id?, :$type?, :$media?, :$title?, :$
     ($title ?? ' title' ~ '=' ~ "\"$title\"" !! Empty) ~
     ($xml-space ?? ' xml:space' ~ '=' ~ "\"$xml-space\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</style>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</style>') 
               !! '/>' )
     )
 }
@@ -155,7 +156,7 @@ sub script ( :$id?, :$charset?, :$type?, :$src?, :$defer?, :$xml-space?, *@c -->
     ($defer ?? ' defer' ~ '=' ~ "\"$defer\"" !! Empty) ~
     ($xml-space ?? ' xml:space' ~ '=' ~ "\"$xml-space\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</script>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</script>') 
               !! '/>' )
     )
 }
@@ -184,7 +185,7 @@ sub noscript ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?
     ($onkeydown ?? ' onkeydown' ~ '=' ~ "\"$onkeydown\"" !! Empty) ~
     ($onkeyup ?? ' onkeyup' ~ '=' ~ "\"$onkeyup\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</noscript>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</noscript>') 
               !! '/>' )
     )
 }
@@ -215,7 +216,7 @@ sub body ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$
     ($onload ?? ' onload' ~ '=' ~ "\"$onload\"" !! Empty) ~
     ($onunload ?? ' onunload' ~ '=' ~ "\"$onunload\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</body>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</body>') 
               !! '/>' )
     )
 }
@@ -244,7 +245,7 @@ sub div ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$o
     ($onkeydown ?? ' onkeydown' ~ '=' ~ "\"$onkeydown\"" !! Empty) ~
     ($onkeyup ?? ' onkeyup' ~ '=' ~ "\"$onkeyup\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</div>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</div>') 
               !! '/>' )
     )
 }
@@ -273,7 +274,7 @@ sub p ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onc
     ($onkeydown ?? ' onkeydown' ~ '=' ~ "\"$onkeydown\"" !! Empty) ~
     ($onkeyup ?? ' onkeyup' ~ '=' ~ "\"$onkeyup\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</p>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</p>') 
               !! '/>' )
     )
 }
@@ -302,7 +303,7 @@ sub h1 ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$on
     ($onkeydown ?? ' onkeydown' ~ '=' ~ "\"$onkeydown\"" !! Empty) ~
     ($onkeyup ?? ' onkeyup' ~ '=' ~ "\"$onkeyup\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</h1>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</h1>') 
               !! '/>' )
     )
 }
@@ -331,7 +332,7 @@ sub h2 ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$on
     ($onkeydown ?? ' onkeydown' ~ '=' ~ "\"$onkeydown\"" !! Empty) ~
     ($onkeyup ?? ' onkeyup' ~ '=' ~ "\"$onkeyup\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</h2>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</h2>') 
               !! '/>' )
     )
 }
@@ -360,7 +361,7 @@ sub h3 ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$on
     ($onkeydown ?? ' onkeydown' ~ '=' ~ "\"$onkeydown\"" !! Empty) ~
     ($onkeyup ?? ' onkeyup' ~ '=' ~ "\"$onkeyup\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</h3>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</h3>') 
               !! '/>' )
     )
 }
@@ -389,7 +390,7 @@ sub h4 ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$on
     ($onkeydown ?? ' onkeydown' ~ '=' ~ "\"$onkeydown\"" !! Empty) ~
     ($onkeyup ?? ' onkeyup' ~ '=' ~ "\"$onkeyup\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</h4>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</h4>') 
               !! '/>' )
     )
 }
@@ -418,7 +419,7 @@ sub h5 ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$on
     ($onkeydown ?? ' onkeydown' ~ '=' ~ "\"$onkeydown\"" !! Empty) ~
     ($onkeyup ?? ' onkeyup' ~ '=' ~ "\"$onkeyup\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</h5>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</h5>') 
               !! '/>' )
     )
 }
@@ -447,7 +448,7 @@ sub h6 ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$on
     ($onkeydown ?? ' onkeydown' ~ '=' ~ "\"$onkeydown\"" !! Empty) ~
     ($onkeyup ?? ' onkeyup' ~ '=' ~ "\"$onkeyup\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</h6>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</h6>') 
               !! '/>' )
     )
 }
@@ -476,7 +477,7 @@ sub ul ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$on
     ($onkeydown ?? ' onkeydown' ~ '=' ~ "\"$onkeydown\"" !! Empty) ~
     ($onkeyup ?? ' onkeyup' ~ '=' ~ "\"$onkeyup\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</ul>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</ul>') 
               !! '/>' )
     )
 }
@@ -505,7 +506,7 @@ sub ol ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$on
     ($onkeydown ?? ' onkeydown' ~ '=' ~ "\"$onkeydown\"" !! Empty) ~
     ($onkeyup ?? ' onkeyup' ~ '=' ~ "\"$onkeyup\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</ol>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</ol>') 
               !! '/>' )
     )
 }
@@ -534,7 +535,7 @@ sub li ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$on
     ($onkeydown ?? ' onkeydown' ~ '=' ~ "\"$onkeydown\"" !! Empty) ~
     ($onkeyup ?? ' onkeyup' ~ '=' ~ "\"$onkeyup\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</li>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</li>') 
               !! '/>' )
     )
 }
@@ -563,7 +564,7 @@ sub dl ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$on
     ($onkeydown ?? ' onkeydown' ~ '=' ~ "\"$onkeydown\"" !! Empty) ~
     ($onkeyup ?? ' onkeyup' ~ '=' ~ "\"$onkeyup\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</dl>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</dl>') 
               !! '/>' )
     )
 }
@@ -592,7 +593,7 @@ sub dt ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$on
     ($onkeydown ?? ' onkeydown' ~ '=' ~ "\"$onkeydown\"" !! Empty) ~
     ($onkeyup ?? ' onkeyup' ~ '=' ~ "\"$onkeyup\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</dt>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</dt>') 
               !! '/>' )
     )
 }
@@ -621,7 +622,7 @@ sub dd ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$on
     ($onkeydown ?? ' onkeydown' ~ '=' ~ "\"$onkeydown\"" !! Empty) ~
     ($onkeyup ?? ' onkeyup' ~ '=' ~ "\"$onkeyup\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</dd>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</dd>') 
               !! '/>' )
     )
 }
@@ -650,7 +651,7 @@ sub address ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?,
     ($onkeydown ?? ' onkeydown' ~ '=' ~ "\"$onkeydown\"" !! Empty) ~
     ($onkeyup ?? ' onkeyup' ~ '=' ~ "\"$onkeyup\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</address>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</address>') 
               !! '/>' )
     )
 }
@@ -679,7 +680,7 @@ sub hr ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$on
     ($onkeydown ?? ' onkeydown' ~ '=' ~ "\"$onkeydown\"" !! Empty) ~
     ($onkeyup ?? ' onkeyup' ~ '=' ~ "\"$onkeyup\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</hr>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</hr>') 
               !! '/>' )
     )
 }
@@ -709,7 +710,7 @@ sub pre ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$o
     ($onkeyup ?? ' onkeyup' ~ '=' ~ "\"$onkeyup\"" !! Empty) ~
     ($xml-space ?? ' xml:space' ~ '=' ~ "\"$xml-space\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</pre>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</pre>') 
               !! '/>' )
     )
 }
@@ -739,7 +740,7 @@ sub blockquote ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$di
     ($onkeyup ?? ' onkeyup' ~ '=' ~ "\"$onkeyup\"" !! Empty) ~
     ($cite ?? ' cite' ~ '=' ~ "\"$cite\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</blockquote>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</blockquote>') 
               !! '/>' )
     )
 }
@@ -770,7 +771,7 @@ sub ins ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$o
     ($cite ?? ' cite' ~ '=' ~ "\"$cite\"" !! Empty) ~
     ($datetime ?? ' datetime' ~ '=' ~ "\"$datetime\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</ins>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</ins>') 
               !! '/>' )
     )
 }
@@ -801,7 +802,7 @@ sub del ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$o
     ($cite ?? ' cite' ~ '=' ~ "\"$cite\"" !! Empty) ~
     ($datetime ?? ' datetime' ~ '=' ~ "\"$datetime\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</del>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</del>') 
               !! '/>' )
     )
 }
@@ -843,7 +844,7 @@ sub a ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onc
     ($shape ?? ' shape' ~ '=' ~ "\"$shape\"" !! Empty) ~
     ($coords ?? ' coords' ~ '=' ~ "\"$coords\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</a>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</a>') 
               !! '/>' )
     )
 }
@@ -872,7 +873,7 @@ sub span ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$
     ($onkeydown ?? ' onkeydown' ~ '=' ~ "\"$onkeydown\"" !! Empty) ~
     ($onkeyup ?? ' onkeyup' ~ '=' ~ "\"$onkeyup\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</span>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</span>') 
               !! '/>' )
     )
 }
@@ -901,7 +902,7 @@ sub bdo ( :$id?, :$class?, :$style?, :$title?, :$onclick?, :$ondblclick?, :$onmo
     ($xml-lang ?? ' xml:lang' ~ '=' ~ "\"$xml-lang\"" !! Empty) ~
     ($dir ?? ' dir' ~ '=' ~ "\"$dir\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</bdo>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</bdo>') 
               !! '/>' )
     )
 }
@@ -917,7 +918,7 @@ sub br ( :$id?, :$class?, :$style?, :$title?, *@c --> HTML) is export(:ALL :br) 
     ($style ?? ' style' ~ '=' ~ "\"$style\"" !! Empty) ~
     ($title ?? ' title' ~ '=' ~ "\"$title\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</br>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</br>') 
               !! '/>' )
     )
 }
@@ -946,7 +947,7 @@ sub em ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$on
     ($onkeydown ?? ' onkeydown' ~ '=' ~ "\"$onkeydown\"" !! Empty) ~
     ($onkeyup ?? ' onkeyup' ~ '=' ~ "\"$onkeyup\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</em>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</em>') 
               !! '/>' )
     )
 }
@@ -975,7 +976,7 @@ sub strong ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, 
     ($onkeydown ?? ' onkeydown' ~ '=' ~ "\"$onkeydown\"" !! Empty) ~
     ($onkeyup ?? ' onkeyup' ~ '=' ~ "\"$onkeyup\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</strong>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</strong>') 
               !! '/>' )
     )
 }
@@ -1004,7 +1005,7 @@ sub dfn ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$o
     ($onkeydown ?? ' onkeydown' ~ '=' ~ "\"$onkeydown\"" !! Empty) ~
     ($onkeyup ?? ' onkeyup' ~ '=' ~ "\"$onkeyup\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</dfn>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</dfn>') 
               !! '/>' )
     )
 }
@@ -1033,7 +1034,7 @@ sub code ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$
     ($onkeydown ?? ' onkeydown' ~ '=' ~ "\"$onkeydown\"" !! Empty) ~
     ($onkeyup ?? ' onkeyup' ~ '=' ~ "\"$onkeyup\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</code>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</code>') 
               !! '/>' )
     )
 }
@@ -1062,7 +1063,7 @@ sub samp ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$
     ($onkeydown ?? ' onkeydown' ~ '=' ~ "\"$onkeydown\"" !! Empty) ~
     ($onkeyup ?? ' onkeyup' ~ '=' ~ "\"$onkeyup\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</samp>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</samp>') 
               !! '/>' )
     )
 }
@@ -1091,7 +1092,7 @@ sub kbd ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$o
     ($onkeydown ?? ' onkeydown' ~ '=' ~ "\"$onkeydown\"" !! Empty) ~
     ($onkeyup ?? ' onkeyup' ~ '=' ~ "\"$onkeyup\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</kbd>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</kbd>') 
               !! '/>' )
     )
 }
@@ -1120,7 +1121,7 @@ sub var ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$o
     ($onkeydown ?? ' onkeydown' ~ '=' ~ "\"$onkeydown\"" !! Empty) ~
     ($onkeyup ?? ' onkeyup' ~ '=' ~ "\"$onkeyup\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</var>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</var>') 
               !! '/>' )
     )
 }
@@ -1149,7 +1150,7 @@ sub cite ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$
     ($onkeydown ?? ' onkeydown' ~ '=' ~ "\"$onkeydown\"" !! Empty) ~
     ($onkeyup ?? ' onkeyup' ~ '=' ~ "\"$onkeyup\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</cite>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</cite>') 
               !! '/>' )
     )
 }
@@ -1178,7 +1179,7 @@ sub abbr ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$
     ($onkeydown ?? ' onkeydown' ~ '=' ~ "\"$onkeydown\"" !! Empty) ~
     ($onkeyup ?? ' onkeyup' ~ '=' ~ "\"$onkeyup\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</abbr>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</abbr>') 
               !! '/>' )
     )
 }
@@ -1207,7 +1208,7 @@ sub acronym ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?,
     ($onkeydown ?? ' onkeydown' ~ '=' ~ "\"$onkeydown\"" !! Empty) ~
     ($onkeyup ?? ' onkeyup' ~ '=' ~ "\"$onkeyup\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</acronym>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</acronym>') 
               !! '/>' )
     )
 }
@@ -1237,7 +1238,7 @@ sub q ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onc
     ($onkeyup ?? ' onkeyup' ~ '=' ~ "\"$onkeyup\"" !! Empty) ~
     ($cite ?? ' cite' ~ '=' ~ "\"$cite\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</q>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</q>') 
               !! '/>' )
     )
 }
@@ -1266,7 +1267,7 @@ sub sub ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$o
     ($onkeydown ?? ' onkeydown' ~ '=' ~ "\"$onkeydown\"" !! Empty) ~
     ($onkeyup ?? ' onkeyup' ~ '=' ~ "\"$onkeyup\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</sub>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</sub>') 
               !! '/>' )
     )
 }
@@ -1295,7 +1296,7 @@ sub sup ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$o
     ($onkeydown ?? ' onkeydown' ~ '=' ~ "\"$onkeydown\"" !! Empty) ~
     ($onkeyup ?? ' onkeyup' ~ '=' ~ "\"$onkeyup\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</sup>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</sup>') 
               !! '/>' )
     )
 }
@@ -1324,7 +1325,7 @@ sub tt ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$on
     ($onkeydown ?? ' onkeydown' ~ '=' ~ "\"$onkeydown\"" !! Empty) ~
     ($onkeyup ?? ' onkeyup' ~ '=' ~ "\"$onkeyup\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</tt>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</tt>') 
               !! '/>' )
     )
 }
@@ -1353,7 +1354,7 @@ sub i ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onc
     ($onkeydown ?? ' onkeydown' ~ '=' ~ "\"$onkeydown\"" !! Empty) ~
     ($onkeyup ?? ' onkeyup' ~ '=' ~ "\"$onkeyup\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</i>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</i>') 
               !! '/>' )
     )
 }
@@ -1382,7 +1383,7 @@ sub b ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onc
     ($onkeydown ?? ' onkeydown' ~ '=' ~ "\"$onkeydown\"" !! Empty) ~
     ($onkeyup ?? ' onkeyup' ~ '=' ~ "\"$onkeyup\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</b>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</b>') 
               !! '/>' )
     )
 }
@@ -1411,7 +1412,7 @@ sub big ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$o
     ($onkeydown ?? ' onkeydown' ~ '=' ~ "\"$onkeydown\"" !! Empty) ~
     ($onkeyup ?? ' onkeyup' ~ '=' ~ "\"$onkeyup\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</big>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</big>') 
               !! '/>' )
     )
 }
@@ -1440,7 +1441,7 @@ sub small ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :
     ($onkeydown ?? ' onkeydown' ~ '=' ~ "\"$onkeydown\"" !! Empty) ~
     ($onkeyup ?? ' onkeyup' ~ '=' ~ "\"$onkeyup\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</small>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</small>') 
               !! '/>' )
     )
 }
@@ -1482,7 +1483,7 @@ sub object ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, 
     ($name ?? ' name' ~ '=' ~ "\"$name\"" !! Empty) ~
     ($tabindex ?? ' tabindex' ~ '=' ~ "\"$tabindex\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</object>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</object>') 
               !! '/>' )
     )
 }
@@ -1499,7 +1500,7 @@ sub param ( :$id?, :$name?, :$value?, :$valuetype?, :$type?, *@c --> HTML) is ex
     ($valuetype ?? ' valuetype' ~ '=' ~ "\"$valuetype\"" !! Empty) ~
     ($type ?? ' type' ~ '=' ~ "\"$type\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</param>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</param>') 
               !! '/>' )
     )
 }
@@ -1535,7 +1536,7 @@ sub img ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$o
     ($usemap ?? ' usemap' ~ '=' ~ "\"$usemap\"" !! Empty) ~
     ($ismap ?? ' ismap' ~ '=' ~ "\"$ismap\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</img>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</img>') 
               !! '/>' )
     )
 }
@@ -1565,7 +1566,7 @@ sub map ( :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown
     ($title ?? ' title' ~ '=' ~ "\"$title\"" !! Empty) ~
     ($name ?? ' name' ~ '=' ~ "\"$name\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</map>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</map>') 
               !! '/>' )
     )
 }
@@ -1603,7 +1604,7 @@ sub area ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$
     ($nohref ?? ' nohref' ~ '=' ~ "\"$nohref\"" !! Empty) ~
     ($alt ?? ' alt' ~ '=' ~ "\"$alt\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</area>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</area>') 
               !! '/>' )
     )
 }
@@ -1639,7 +1640,7 @@ sub form ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$
     ($accept ?? ' accept' ~ '=' ~ "\"$accept\"" !! Empty) ~
     ($accept-charset ?? ' accept-charset' ~ '=' ~ "\"$accept-charset\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</form>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</form>') 
               !! '/>' )
     )
 }
@@ -1672,7 +1673,7 @@ sub label ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :
     ($onfocus ?? ' onfocus' ~ '=' ~ "\"$onfocus\"" !! Empty) ~
     ($onblur ?? ' onblur' ~ '=' ~ "\"$onblur\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</label>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</label>') 
               !! '/>' )
     )
 }
@@ -1719,7 +1720,7 @@ sub input ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :
     ($onchange ?? ' onchange' ~ '=' ~ "\"$onchange\"" !! Empty) ~
     ($accept ?? ' accept' ~ '=' ~ "\"$accept\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</input>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</input>') 
               !! '/>' )
     )
 }
@@ -1756,7 +1757,7 @@ sub select ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, 
     ($onblur ?? ' onblur' ~ '=' ~ "\"$onblur\"" !! Empty) ~
     ($onchange ?? ' onchange' ~ '=' ~ "\"$onchange\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</select>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</select>') 
               !! '/>' )
     )
 }
@@ -1787,7 +1788,7 @@ sub optgroup ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?
     ($disabled ?? ' disabled' ~ '=' ~ "\"$disabled\"" !! Empty) ~
     ($label ?? ' label' ~ '=' ~ "\"$label\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</optgroup>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</optgroup>') 
               !! '/>' )
     )
 }
@@ -1820,7 +1821,7 @@ sub option ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, 
     ($label ?? ' label' ~ '=' ~ "\"$label\"" !! Empty) ~
     ($value ?? ' value' ~ '=' ~ "\"$value\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</option>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</option>') 
               !! '/>' )
     )
 }
@@ -1860,7 +1861,7 @@ sub textarea ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?
     ($onselect ?? ' onselect' ~ '=' ~ "\"$onselect\"" !! Empty) ~
     ($onchange ?? ' onchange' ~ '=' ~ "\"$onchange\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</textarea>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</textarea>') 
               !! '/>' )
     )
 }
@@ -1889,7 +1890,7 @@ sub fieldset ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?
     ($onkeydown ?? ' onkeydown' ~ '=' ~ "\"$onkeydown\"" !! Empty) ~
     ($onkeyup ?? ' onkeyup' ~ '=' ~ "\"$onkeyup\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</fieldset>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</fieldset>') 
               !! '/>' )
     )
 }
@@ -1919,7 +1920,7 @@ sub legend ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, 
     ($onkeyup ?? ' onkeyup' ~ '=' ~ "\"$onkeyup\"" !! Empty) ~
     ($accesskey ?? ' accesskey' ~ '=' ~ "\"$accesskey\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</legend>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</legend>') 
               !! '/>' )
     )
 }
@@ -1956,7 +1957,7 @@ sub button ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, 
     ($type ?? ' type' ~ '=' ~ "\"$type\"" !! Empty) ~
     ($disabled ?? ' disabled' ~ '=' ~ "\"$disabled\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</button>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</button>') 
               !! '/>' )
     )
 }
@@ -1992,7 +1993,7 @@ sub table ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :
     ($cellspacing ?? ' cellspacing' ~ '=' ~ "\"$cellspacing\"" !! Empty) ~
     ($cellpadding ?? ' cellpadding' ~ '=' ~ "\"$cellpadding\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</table>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</table>') 
               !! '/>' )
     )
 }
@@ -2021,7 +2022,7 @@ sub caption ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?,
     ($onkeydown ?? ' onkeydown' ~ '=' ~ "\"$onkeydown\"" !! Empty) ~
     ($onkeyup ?? ' onkeyup' ~ '=' ~ "\"$onkeyup\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</caption>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</caption>') 
               !! '/>' )
     )
 }
@@ -2054,7 +2055,7 @@ sub thead ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :
     ($charoff ?? ' charoff' ~ '=' ~ "\"$charoff\"" !! Empty) ~
     ($valign ?? ' valign' ~ '=' ~ "\"$valign\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</thead>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</thead>') 
               !! '/>' )
     )
 }
@@ -2087,7 +2088,7 @@ sub tfoot ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :
     ($charoff ?? ' charoff' ~ '=' ~ "\"$charoff\"" !! Empty) ~
     ($valign ?? ' valign' ~ '=' ~ "\"$valign\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</tfoot>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</tfoot>') 
               !! '/>' )
     )
 }
@@ -2120,7 +2121,7 @@ sub tbody ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :
     ($charoff ?? ' charoff' ~ '=' ~ "\"$charoff\"" !! Empty) ~
     ($valign ?? ' valign' ~ '=' ~ "\"$valign\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</tbody>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</tbody>') 
               !! '/>' )
     )
 }
@@ -2155,7 +2156,7 @@ sub colgroup ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?
     ($charoff ?? ' charoff' ~ '=' ~ "\"$charoff\"" !! Empty) ~
     ($valign ?? ' valign' ~ '=' ~ "\"$valign\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</colgroup>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</colgroup>') 
               !! '/>' )
     )
 }
@@ -2190,7 +2191,7 @@ sub col ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$o
     ($charoff ?? ' charoff' ~ '=' ~ "\"$charoff\"" !! Empty) ~
     ($valign ?? ' valign' ~ '=' ~ "\"$valign\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</col>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</col>') 
               !! '/>' )
     )
 }
@@ -2223,7 +2224,7 @@ sub tr ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$on
     ($charoff ?? ' charoff' ~ '=' ~ "\"$charoff\"" !! Empty) ~
     ($valign ?? ' valign' ~ '=' ~ "\"$valign\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</tr>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</tr>') 
               !! '/>' )
     )
 }
@@ -2262,7 +2263,7 @@ sub th ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$on
     ($charoff ?? ' charoff' ~ '=' ~ "\"$charoff\"" !! Empty) ~
     ($valign ?? ' valign' ~ '=' ~ "\"$valign\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</th>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</th>') 
               !! '/>' )
     )
 }
@@ -2301,14 +2302,17 @@ sub td ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$on
     ($charoff ?? ' charoff' ~ '=' ~ "\"$charoff\"" !! Empty) ~
     ($valign ?? ' valign' ~ '=' ~ "\"$valign\"" !! Empty) ~
  
-        ( +@c ?? ('>' ~ NL ~ @c>>.Str>>.indent($indent).join(NL) ~ (+@c ?? NL !! "") ~ '</td>') 
+        ( +@c ?? ('>' ~ NL ~ ($shall-indent ?? @c>>.Str>>.indent($indent).join(NL) !! @c>>.Str.join(NL) )~ (+@c ?? NL !! "") ~ '</td>') 
               !! '/>' )
     )
 }
 
 
+sub writer-shall-indent(Bool $shall-it) is export(:ALL :writer-shall-indent) { $shall-indent = $shall-it }
 sub EXPORT(::Guard = HTML) {
 	$Guard = Guard;
-	{ Guard => $Guard }
+	{
+		Guard => $Guard,
+    }
 }
 
