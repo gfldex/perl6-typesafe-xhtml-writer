@@ -10,8 +10,9 @@ TESTS=t/basic.t t/skeleton.t t/parametric.t
 
 $(TESTS): lib/Typesafe/XHTML/Writer.pm6
 
-benchmark: bin/benchmark.p6
-	perl6 $(LIB-PATH) $< > /dev/null
+benchmark: bin/benchmark.p6 bin/benchmark-parameterised.p6
+	perl6 $(LIB-PATH) bin/benchmark.p6 > /dev/null
+	perl6 $(LIB-PATH) bin/benchmark-parameterised.p6 > /dev/null
 
 test: t/basic.t
 	prove -v --exec "perl6 $(LIB-PATH)" -r ./t/
