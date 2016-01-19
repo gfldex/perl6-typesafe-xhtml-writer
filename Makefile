@@ -1,4 +1,4 @@
-LIB-PATH=-I ./lib/ -I ../perl6-typesafe-html/lib/
+LIB-PATH=-I . -I ./lib/ -I ../perl6-typesafe-html/lib/
 
 lib/Typesafe/XHTML/Writer.pm6: bin/generate-function-definition.p6 Build.pm
 	perl6 $(LIB-PATH) -M Build -e 'Build.new.build(".")'
