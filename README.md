@@ -78,6 +78,13 @@ put span(id=>'foo', "<span>Hello Camelia!</span>");
 # </span>
 ```
 
+## Disable indentation
+
+```
+use Typesafe::XHTML::Writer :writer-shall-indent; # :ALL will work too
+writer-shall-indent False;
+```
+
 ## License
 
 (c) Wenzel P. P. Peppmeyer, Released under Artistic License 2.0.
