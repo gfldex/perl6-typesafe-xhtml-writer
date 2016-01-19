@@ -3,10 +3,11 @@ use Typesafe::HTML;
 my $indent = 0;
 
 constant NL = "\n";
+my $Guard = HTML;
 sub html ( :$lang?, :$xml-lang?, :$dir?, :$id?, *@c --> HTML) is export(:ALL :html) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<html' ~ 
            ($lang ?? ' lang' ~ '=' ~ "\"$lang\"" !! Empty) ~
     ($xml-lang ?? ' xml:lang' ~ '=' ~ "\"$xml-lang\"" !! Empty) ~
@@ -21,8 +22,8 @@ sub html ( :$lang?, :$xml-lang?, :$dir?, :$id?, *@c --> HTML) is export(:ALL :ht
 
 sub head ( :$lang?, :$xml-lang?, :$dir?, :$id?, :$profile?, *@c --> HTML) is export(:ALL :head) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<head' ~ 
            ($lang ?? ' lang' ~ '=' ~ "\"$lang\"" !! Empty) ~
     ($xml-lang ?? ' xml:lang' ~ '=' ~ "\"$xml-lang\"" !! Empty) ~
@@ -38,8 +39,8 @@ sub head ( :$lang?, :$xml-lang?, :$dir?, :$id?, :$profile?, *@c --> HTML) is exp
 
 sub title ( :$lang?, :$xml-lang?, :$dir?, :$id?, *@c --> HTML) is export(:ALL :title) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<title' ~ 
            ($lang ?? ' lang' ~ '=' ~ "\"$lang\"" !! Empty) ~
     ($xml-lang ?? ' xml:lang' ~ '=' ~ "\"$xml-lang\"" !! Empty) ~
@@ -54,8 +55,8 @@ sub title ( :$lang?, :$xml-lang?, :$dir?, :$id?, *@c --> HTML) is export(:ALL :t
 
 sub base ( :$href?, :$id?, *@c --> HTML) is export(:ALL :base) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<base' ~ 
            ($href ?? ' href' ~ '=' ~ "\"$href\"" !! Empty) ~
     ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
@@ -68,8 +69,8 @@ sub base ( :$href?, :$id?, *@c --> HTML) is export(:ALL :base) {
 
 sub meta ( :$lang?, :$xml-lang?, :$dir?, :$id?, :$http-equiv?, :$name?, :$content?, :$scheme?, *@c --> HTML) is export(:ALL :meta) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<meta' ~ 
            ($lang ?? ' lang' ~ '=' ~ "\"$lang\"" !! Empty) ~
     ($xml-lang ?? ' xml:lang' ~ '=' ~ "\"$xml-lang\"" !! Empty) ~
@@ -88,8 +89,8 @@ sub meta ( :$lang?, :$xml-lang?, :$dir?, :$id?, :$http-equiv?, :$name?, :$conten
 
 sub link ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, :$charset?, :$href?, :$hreflang?, :$type?, :$rel?, :$rev?, :$media?, *@c --> HTML) is export(:ALL :link) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<link' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -124,8 +125,8 @@ sub link ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$
 
 sub style ( :$lang?, :$xml-lang?, :$dir?, :$id?, :$type?, :$media?, :$title?, :$xml-space?, *@c --> HTML) is export(:ALL :style) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<style' ~ 
            ($lang ?? ' lang' ~ '=' ~ "\"$lang\"" !! Empty) ~
     ($xml-lang ?? ' xml:lang' ~ '=' ~ "\"$xml-lang\"" !! Empty) ~
@@ -144,8 +145,8 @@ sub style ( :$lang?, :$xml-lang?, :$dir?, :$id?, :$type?, :$media?, :$title?, :$
 
 sub script ( :$id?, :$charset?, :$type?, :$src?, :$defer?, :$xml-space?, *@c --> HTML) is export(:ALL :script) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<script' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($charset ?? ' charset' ~ '=' ~ "\"$charset\"" !! Empty) ~
@@ -162,8 +163,8 @@ sub script ( :$id?, :$charset?, :$type?, :$src?, :$defer?, :$xml-space?, *@c -->
 
 sub noscript ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, *@c --> HTML) is export(:ALL :noscript) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<noscript' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -191,8 +192,8 @@ sub noscript ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?
 
 sub body ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, :$onload?, :$onunload?, *@c --> HTML) is export(:ALL :body) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<body' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -222,8 +223,8 @@ sub body ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$
 
 sub div ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, *@c --> HTML) is export(:ALL :div) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<div' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -251,8 +252,8 @@ sub div ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$o
 
 sub p ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, *@c --> HTML) is export(:ALL :p) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<p' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -280,8 +281,8 @@ sub p ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onc
 
 sub h1 ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, *@c --> HTML) is export(:ALL :h1) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<h1' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -309,8 +310,8 @@ sub h1 ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$on
 
 sub h2 ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, *@c --> HTML) is export(:ALL :h2) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<h2' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -338,8 +339,8 @@ sub h2 ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$on
 
 sub h3 ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, *@c --> HTML) is export(:ALL :h3) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<h3' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -367,8 +368,8 @@ sub h3 ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$on
 
 sub h4 ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, *@c --> HTML) is export(:ALL :h4) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<h4' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -396,8 +397,8 @@ sub h4 ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$on
 
 sub h5 ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, *@c --> HTML) is export(:ALL :h5) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<h5' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -425,8 +426,8 @@ sub h5 ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$on
 
 sub h6 ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, *@c --> HTML) is export(:ALL :h6) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<h6' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -454,8 +455,8 @@ sub h6 ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$on
 
 sub ul ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, *@c --> HTML) is export(:ALL :ul) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<ul' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -483,8 +484,8 @@ sub ul ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$on
 
 sub ol ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, *@c --> HTML) is export(:ALL :ol) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<ol' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -512,8 +513,8 @@ sub ol ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$on
 
 sub li ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, *@c --> HTML) is export(:ALL :li) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<li' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -541,8 +542,8 @@ sub li ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$on
 
 sub dl ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, *@c --> HTML) is export(:ALL :dl) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<dl' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -570,8 +571,8 @@ sub dl ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$on
 
 sub dt ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, *@c --> HTML) is export(:ALL :dt) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<dt' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -599,8 +600,8 @@ sub dt ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$on
 
 sub dd ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, *@c --> HTML) is export(:ALL :dd) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<dd' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -628,8 +629,8 @@ sub dd ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$on
 
 sub address ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, *@c --> HTML) is export(:ALL :address) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<address' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -657,8 +658,8 @@ sub address ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?,
 
 sub hr ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, *@c --> HTML) is export(:ALL :hr) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<hr' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -686,8 +687,8 @@ sub hr ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$on
 
 sub pre ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, :$xml-space?, *@c --> HTML) is export(:ALL :pre) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<pre' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -716,8 +717,8 @@ sub pre ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$o
 
 sub blockquote ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, :$cite?, *@c --> HTML) is export(:ALL :blockquote) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<blockquote' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -746,8 +747,8 @@ sub blockquote ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$di
 
 sub ins ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, :$cite?, :$datetime?, *@c --> HTML) is export(:ALL :ins) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<ins' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -777,8 +778,8 @@ sub ins ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$o
 
 sub del ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, :$cite?, :$datetime?, *@c --> HTML) is export(:ALL :del) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<del' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -808,8 +809,8 @@ sub del ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$o
 
 sub a ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, :$accesskey?, :$tabindex?, :$onfocus?, :$onblur?, :$charset?, :$type?, :$name?, :$href?, :$hreflang?, :$rel?, :$rev?, :$shape?, :$coords?, *@c --> HTML) is export(:ALL :a) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<a' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -850,8 +851,8 @@ sub a ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onc
 
 sub span ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, *@c --> HTML) is export(:ALL :span) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<span' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -879,8 +880,8 @@ sub span ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$
 
 sub bdo ( :$id?, :$class?, :$style?, :$title?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, :$lang?, :$xml-lang?, :$dir?, *@c --> HTML) is export(:ALL :bdo) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<bdo' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -908,8 +909,8 @@ sub bdo ( :$id?, :$class?, :$style?, :$title?, :$onclick?, :$ondblclick?, :$onmo
 
 sub br ( :$id?, :$class?, :$style?, :$title?, *@c --> HTML) is export(:ALL :br) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<br' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -924,8 +925,8 @@ sub br ( :$id?, :$class?, :$style?, :$title?, *@c --> HTML) is export(:ALL :br) 
 
 sub em ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, *@c --> HTML) is export(:ALL :em) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<em' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -953,8 +954,8 @@ sub em ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$on
 
 sub strong ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, *@c --> HTML) is export(:ALL :strong) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<strong' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -982,8 +983,8 @@ sub strong ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, 
 
 sub dfn ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, *@c --> HTML) is export(:ALL :dfn) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<dfn' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -1011,8 +1012,8 @@ sub dfn ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$o
 
 sub code ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, *@c --> HTML) is export(:ALL :code) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<code' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -1040,8 +1041,8 @@ sub code ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$
 
 sub samp ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, *@c --> HTML) is export(:ALL :samp) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<samp' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -1069,8 +1070,8 @@ sub samp ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$
 
 sub kbd ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, *@c --> HTML) is export(:ALL :kbd) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<kbd' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -1098,8 +1099,8 @@ sub kbd ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$o
 
 sub var ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, *@c --> HTML) is export(:ALL :var) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<var' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -1127,8 +1128,8 @@ sub var ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$o
 
 sub cite ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, *@c --> HTML) is export(:ALL :cite) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<cite' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -1156,8 +1157,8 @@ sub cite ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$
 
 sub abbr ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, *@c --> HTML) is export(:ALL :abbr) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<abbr' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -1185,8 +1186,8 @@ sub abbr ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$
 
 sub acronym ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, *@c --> HTML) is export(:ALL :acronym) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<acronym' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -1214,8 +1215,8 @@ sub acronym ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?,
 
 sub q ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, :$cite?, *@c --> HTML) is export(:ALL :q) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<q' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -1244,8 +1245,8 @@ sub q ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onc
 
 sub sub ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, *@c --> HTML) is export(:ALL :sub) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<sub' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -1273,8 +1274,8 @@ sub sub ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$o
 
 sub sup ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, *@c --> HTML) is export(:ALL :sup) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<sup' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -1302,8 +1303,8 @@ sub sup ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$o
 
 sub tt ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, *@c --> HTML) is export(:ALL :tt) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<tt' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -1331,8 +1332,8 @@ sub tt ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$on
 
 sub i ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, *@c --> HTML) is export(:ALL :i) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<i' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -1360,8 +1361,8 @@ sub i ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onc
 
 sub b ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, *@c --> HTML) is export(:ALL :b) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<b' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -1389,8 +1390,8 @@ sub b ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onc
 
 sub big ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, *@c --> HTML) is export(:ALL :big) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<big' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -1418,8 +1419,8 @@ sub big ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$o
 
 sub small ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, *@c --> HTML) is export(:ALL :small) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<small' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -1447,8 +1448,8 @@ sub small ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :
 
 sub object ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, :$declare?, :$classid?, :$codebase?, :$data?, :$type?, :$codetype?, :$archive?, :$standby?, :$height?, :$width?, :$usemap?, :$name?, :$tabindex?, *@c --> HTML) is export(:ALL :object) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<object' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -1489,8 +1490,8 @@ sub object ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, 
 
 sub param ( :$id?, :$name?, :$value?, :$valuetype?, :$type?, *@c --> HTML) is export(:ALL :param) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<param' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($name ?? ' name' ~ '=' ~ "\"$name\"" !! Empty) ~
@@ -1506,8 +1507,8 @@ sub param ( :$id?, :$name?, :$value?, :$valuetype?, :$type?, *@c --> HTML) is ex
 
 sub img ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, :$src?, :$alt?, :$longdesc?, :$height?, :$width?, :$usemap?, :$ismap?, *@c --> HTML) is export(:ALL :img) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<img' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -1542,8 +1543,8 @@ sub img ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$o
 
 sub map ( :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, :$id?, :$class?, :$style?, :$title?, :$name?, *@c --> HTML) is export(:ALL :map) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<map' ~ 
            ($lang ?? ' lang' ~ '=' ~ "\"$lang\"" !! Empty) ~
     ($xml-lang ?? ' xml:lang' ~ '=' ~ "\"$xml-lang\"" !! Empty) ~
@@ -1572,8 +1573,8 @@ sub map ( :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown
 
 sub area ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, :$accesskey?, :$tabindex?, :$onfocus?, :$onblur?, :$shape?, :$coords?, :$href?, :$nohref?, :$alt?, *@c --> HTML) is export(:ALL :area) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<area' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -1610,8 +1611,8 @@ sub area ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$
 
 sub form ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, :$action?, :$method?, :$enctype?, :$onsubmit?, :$onreset?, :$accept?, :$accept-charset?, *@c --> HTML) is export(:ALL :form) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<form' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -1646,8 +1647,8 @@ sub form ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$
 
 sub label ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, :$for?, :$accesskey?, :$onfocus?, :$onblur?, *@c --> HTML) is export(:ALL :label) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<label' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -1679,8 +1680,8 @@ sub label ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :
 
 sub input ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, :$accesskey?, :$tabindex?, :$onfocus?, :$onblur?, :$type?, :$name?, :$value?, :$checked?, :$disabled?, :$readonly?, :$size?, :$maxlength?, :$src?, :$alt?, :$usemap?, :$onselect?, :$onchange?, :$accept?, *@c --> HTML) is export(:ALL :input) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<input' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -1726,8 +1727,8 @@ sub input ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :
 
 sub select ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, :$name?, :$size?, :$multiple?, :$disabled?, :$tabindex?, :$onfocus?, :$onblur?, :$onchange?, *@c --> HTML) is export(:ALL :select) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<select' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -1763,8 +1764,8 @@ sub select ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, 
 
 sub optgroup ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, :$disabled?, :$label?, *@c --> HTML) is export(:ALL :optgroup) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<optgroup' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -1794,8 +1795,8 @@ sub optgroup ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?
 
 sub option ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, :$selected?, :$disabled?, :$label?, :$value?, *@c --> HTML) is export(:ALL :option) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<option' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -1827,8 +1828,8 @@ sub option ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, 
 
 sub textarea ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, :$accesskey?, :$tabindex?, :$onfocus?, :$onblur?, :$name?, :$rows?, :$cols?, :$disabled?, :$readonly?, :$onselect?, :$onchange?, *@c --> HTML) is export(:ALL :textarea) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<textarea' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -1867,8 +1868,8 @@ sub textarea ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?
 
 sub fieldset ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, *@c --> HTML) is export(:ALL :fieldset) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<fieldset' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -1896,8 +1897,8 @@ sub fieldset ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?
 
 sub legend ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, :$accesskey?, *@c --> HTML) is export(:ALL :legend) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<legend' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -1926,8 +1927,8 @@ sub legend ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, 
 
 sub button ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, :$accesskey?, :$tabindex?, :$onfocus?, :$onblur?, :$name?, :$value?, :$type?, :$disabled?, *@c --> HTML) is export(:ALL :button) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<button' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -1963,8 +1964,8 @@ sub button ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, 
 
 sub table ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, :$summary?, :$width?, :$border?, :$frame?, :$rules?, :$cellspacing?, :$cellpadding?, *@c --> HTML) is export(:ALL :table) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<table' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -1999,8 +2000,8 @@ sub table ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :
 
 sub caption ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, *@c --> HTML) is export(:ALL :caption) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<caption' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -2028,8 +2029,8 @@ sub caption ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?,
 
 sub thead ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, :$align?, :$char?, :$charoff?, :$valign?, *@c --> HTML) is export(:ALL :thead) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<thead' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -2061,8 +2062,8 @@ sub thead ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :
 
 sub tfoot ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, :$align?, :$char?, :$charoff?, :$valign?, *@c --> HTML) is export(:ALL :tfoot) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<tfoot' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -2094,8 +2095,8 @@ sub tfoot ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :
 
 sub tbody ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, :$align?, :$char?, :$charoff?, :$valign?, *@c --> HTML) is export(:ALL :tbody) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<tbody' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -2127,8 +2128,8 @@ sub tbody ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :
 
 sub colgroup ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, :$span?, :$width?, :$align?, :$char?, :$charoff?, :$valign?, *@c --> HTML) is export(:ALL :colgroup) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<colgroup' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -2162,8 +2163,8 @@ sub colgroup ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?
 
 sub col ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, :$span?, :$width?, :$align?, :$char?, :$charoff?, :$valign?, *@c --> HTML) is export(:ALL :col) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<col' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -2197,8 +2198,8 @@ sub col ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$o
 
 sub tr ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, :$align?, :$char?, :$charoff?, :$valign?, *@c --> HTML) is export(:ALL :tr) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<tr' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -2230,8 +2231,8 @@ sub tr ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$on
 
 sub th ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, :$abbr?, :$axis?, :$headers?, :$scope?, :$rowspan?, :$colspan?, :$align?, :$char?, :$charoff?, :$valign?, *@c --> HTML) is export(:ALL :th) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<th' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -2269,8 +2270,8 @@ sub th ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$on
 
 sub td ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$onclick?, :$ondblclick?, :$onmousedown?, :$onmouseup?, :$onmouseover?, :$onmousemove?, :$onmouseout?, :$onkeypress?, :$onkeydown?, :$onkeyup?, :$abbr?, :$axis?, :$headers?, :$scope?, :$rowspan?, :$colspan?, :$align?, :$char?, :$charoff?, :$valign?, *@c --> HTML) is export(:ALL :td) {
     (temp $indent)+=2;
-    for @c -> $e is rw { $e = HTML.new ~ $e.Str unless $e ~~ HTML }
-    HTML.new(
+    for @c -> $e is rw { $e = $Guard.new ~ $e.Str unless $e ~~ HTML }
+    $Guard.new(
         '<td' ~ 
            ($id ?? ' id' ~ '=' ~ "\"$id\"" !! Empty) ~
     ($class ?? ' class' ~ '=' ~ "\"$class\"" !! Empty) ~
@@ -2305,4 +2306,9 @@ sub td ( :$id?, :$class?, :$style?, :$title?, :$lang?, :$xml-lang?, :$dir?, :$on
     )
 }
 
+
+sub EXPORT(::Guard = HTML) {
+	$Guard = Guard;
+	{ Guard => $Guard }
+}
 
