@@ -31,7 +31,7 @@ sub MAIN($schema-file?) {
 	put 'my $indent = 0;' ~ "\n";
 	put 'constant NL = "\n";';
 	put 'my $Guard = HTML;';
-	put 'my Bool $shall-indent = True;';
+	put 'my Bool $shall-indent = False;';
 	multi sub walk(XML::Element $_ where .name ~~ <xs:element> && (.attribs<name>:exists)) {
 		my $name := .attribs<name> // Failure.new;
 		%elements{$name} = Any;
