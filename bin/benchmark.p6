@@ -1,4 +1,10 @@
-use v6; use Typesafe::XHTML::Writer :ALL;
+use Typesafe::HTML;
+class ExtendedHTML is HTML {    
+	multi method utf8-to-htmlentity (Str:D \s) is export {
+		s.subst('&', '&amp;', :g).subst('<', '&lt;', :g);
+	}
+}
+use v6; use Typesafe::XHTML::Writer ExtendedHTML, :ALL;
 
 put p(onkeypress=>"yRr", onmousemove=>"LKc", title=>"law", 
     span(class=>"zQyl", ondblclick=>"hAQvI", id=>"XWkaDZ", onmouseup=>"OQnVKm", onkeypress=>"uZdkqI", 
