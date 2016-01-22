@@ -2466,7 +2466,9 @@ sub writer-shall-indent(Bool $shall-it) is export(:ALL :writer-shall-indent) { $
 sub EXPORT(::Guard = HTML) {
 	$Guard = Guard;
 	{
-		Guard => $Guard,
-    }
+		HTML => HTML,
+		'&infix:<~>' => &infix:<~>,
+		Guard => $Guard
+	}
 }
 
