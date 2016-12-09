@@ -1,7 +1,7 @@
 {
     "perl" : "6.*",
     "name" : "Typesafe::XHTML::Writer",
-    "version" : "0.1.0",
+    "version" : "0.1.1",
     "description" : "Generate XHTML1.1 with subs using Typesafe::HTML",
     "authors" : [ "Wenzel P. P. Peppmeyer" ],
     "provides" : {
