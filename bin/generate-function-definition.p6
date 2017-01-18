@@ -62,8 +62,8 @@ sub MAIN($schema-file?) {
                 !! '/>' )
             )
             \}
-
-            EOH
+            
+        EOH
         }
 
         multi sub walk(XML::Element $_ where .name ~~ <xs:attribute>, :$element-name!) {
